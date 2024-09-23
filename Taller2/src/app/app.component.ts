@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { mergeMap, Observable, of } from 'rxjs';
-import { User } from './models/User';
+import { mergeMap, of } from 'rxjs';
 import { Post } from './models/Post';
+import { User } from './models/User';
 
 @Component({
   selector: 'app-root',
