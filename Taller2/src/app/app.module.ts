@@ -6,10 +6,12 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
+import { UsuarioDetailComponent } from './Usuario/usuario-detail/usuario-detail.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    UsuarioDetailComponent
   ],
   imports: [
     BrowserModule,

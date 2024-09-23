@@ -9,9 +9,7 @@
       </form>
 
       <ng-container *ngIf="usuario">
-        <p>Nombre : {{ usuario.username }}</p>
-        <p>Primer Nombre : {{ usuario.firstName }}</p>
-        <p>Segundo Nombre : {{ usuario.lastName }}</p>
+        <app-usuario-detail [usuario]="usuario"></app-usuario-detail>
       </ng-container>
     </div>
   </section>
