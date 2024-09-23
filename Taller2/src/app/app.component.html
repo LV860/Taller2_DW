@@ -2,7 +2,7 @@
   <section class="users-table">
     <!-- Filtrar usuario -->
     <div>
-      <form #form="ngForm" (ngSubmit)="searchUser()">
+      <form #form="ngForm" (ngSubmit)="getUserAndPost()">
         <label for="username">Username</label>
         <input type="text" name="username " [(ngModel)]="txtUser" />
         <button type="submit">Buscar usuario</button>
@@ -10,6 +10,10 @@
 
       <ng-container *ngIf="usuario">
         <app-usuario-detail [usuario]="usuario"></app-usuario-detail>
+      </ng-container>
+
+      <ng-container *ngIf="publicacion">
+        <app-usuario-posts [publicacion]="publicacion"></app-usuario-posts>
       </ng-container>
     </div>
   </section>

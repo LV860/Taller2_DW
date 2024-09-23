@@ -7,11 +7,13 @@ import { FormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 import { UsuarioDetailComponent } from './Usuario/usuario-detail/usuario-detail.component';
+import { UsuarioPostsComponent } from './Usuario/usuario-posts/usuario-posts.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UsuarioDetailComponent
+    UsuarioDetailComponent,
+    UsuarioPostsComponent
   ],
   imports: [
     BrowserModule,
