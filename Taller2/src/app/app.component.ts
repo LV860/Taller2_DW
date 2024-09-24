@@ -21,6 +21,7 @@ export class AppComponent {
   //Variable
   usuario: User | null = null;
   publicacion: Post | null = null;
+  comentario: Comment | null = null;
 
   searchUser() {
     this.http
