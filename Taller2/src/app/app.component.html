@@ -1,29 +1,61 @@
 <main>
   <section class="users-table">
     <!-- Filtrar usuario -->
-    <div>
-      <form #form="ngForm" (ngSubmit)="getUserPostComments()">
-        <label for="username">Username</label>
-        <input type="text" name="username " [(ngModel)]="txtUser" />
-        <button type="submit">Buscar usuario</button>
+    <div class="mb-4">
+      <h1 class="text-center">Buscar usuario</h1>
+      <form #form="ngForm" (ngSubmit)="getUserPostComments()" class="d-flex flex-column align-items-center">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" name="username" [(ngModel)]="txtUser" class="form-control w-50 mb-3" placeholder="Ingrese el nombre de usuario" />
+        <button type="submit" (click)="usuarioBuscado = true" class="btn btn-primary">Buscar usuario</button>
       </form>
     </div>
 
+    <!-- Mostrar detalle del usuario si ha sido encontrado -->
     <div>
       <ng-container *ngIf="usuario">
+        <h3 class="text-center">Usuario</h3>
         <app-usuario-detail [usuario]="usuario"></app-usuario-detail>
+        <!-- Mostrar publicaciones y comentarios -->
+        <div>
+          <ng-container *ngIf="publicaciones.length > 0">
+            <h3 class="mt-4">Publicaciones</h3>
+            <ul class="list-group">
+              <li *ngFor="let publicacion of publicaciones" class="list-group-item">
+                <!-- Componente para mostrar cada publicación -->
+                <app-usuario-posts [publicacion]="publicacion"></app-usuario-posts>
+
+                <!-- Mostrar comentarios de la publicación -->
+                <h5 class="mt-3 ms-5">Comentarios</h5> <!-- Aumentado a ms-5 para más margen izquierdo -->
+                <ul class="list-group ps-5"> <!-- Aumentado a ps-5 para padding-left -->
+                  <ng-container *ngIf="comentarios[publicacion.id] && comentarios[publicacion.id].length > 0; else noComments">
+                    <li *ngFor="let comment of comentarios[publicacion.id]" class="list-group-item">
+                      <app-usuario-comment [comentario]="comment"></app-usuario-comment>
+                    </li>
+                  </ng-container>
+                  <!-- Mostrar mensaje si no hay comentarios -->
+                  <ng-template #noComments>
+                    <li class="list-group-item">No hay comentarios</li>
+                  </ng-template>
+                </ul>
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+
+        <!-- Mostrar mensaje si no hay publicaciones -->
+        <div>
+          <ng-container *ngIf="usuarioBuscado && publicaciones.length === 0">
+            <h3 class="text-center mt-4">No hay publicaciones para este usuario</h3>
+          </ng-container>
+        </div>
       </ng-container>
     </div>
 
+    <!-- Mostrar mensaje si no se encuentra el usuario -->
     <div>
-      <ng-container *ngIf="publicacion">
-        <app-usuario-posts [publicacion]="publicacion"></app-usuario-posts>
-      </ng-container>
-    </div>
-
-    <div>
-      <ng-container *ngIf="comentario">
-        <app-usuario-comment [comentario]="comentario"></app-usuario-comment>
+      <ng-container *ngIf="usuarioBuscado && !usuario">
+        <h3 class="text-danger text-center mt-4">¡Oops! No pudimos encontrar al usuario que buscabas.</h3>
+        <p class="text-center">Por favor, verifica que el nombre de usuario sea correcto o intenta con otro.</p>
       </ng-container>
     </div>
   </section>

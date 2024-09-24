@@ -10,3 +10,9 @@ export interface Reactions {
   likes: number;
   dislikes: number;
 }
+
+ export interface PostWithComments {
+  post: Post;
+  comments: Comment[];
+}
+

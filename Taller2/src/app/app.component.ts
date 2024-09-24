@@ -16,35 +16,22 @@ export class AppComponent {
   title = 'Taller2';
 
   txtUser: string = '';
+  usuarioBuscado: boolean = false;
 
   constructor(private http: HttpClient) {}
 
-  //Variable
+  // Variables
   usuario: User | null = null;
-  publicacion: Post | null = null;
-  comentario: Comment | null = null;
+  publicaciones: Post[] = []; // Arreglo de publicaciones
+  comentarios: { [postId: number]: Comment[] } = {}; // Diccionario de comentarios por publicación
 
   searchUser() {
     this.http
-      .get<{ users: User[] }>(`${this.ROOT_URL}/users/username=${this.txtUser}`)
+      .get<{ users: User[] }>(`${this.ROOT_URL}/users/filter?key=username&value=${this.txtUser}`)
       .subscribe({
         next: (userInfo) => {
           if (userInfo.users.length > 0) {
             this.usuario = userInfo.users[0];
-          } else {
-            this.usuario = null;
-          }
-        },
-      });
-  }
-
-  getPost(id: Number) {
-    this.http
-      .get<{ posts: Post[] }>(`${this.ROOT_URL}/posts/user/${this.txtUser}`)
-      .subscribe({
-        next: (postInfo) => {
-          if (postInfo.posts.length > 0) {
-            this.publicacion = postInfo.posts[0];
           } else {
             this.usuario = null;
           }
@@ -57,7 +44,7 @@ export class AppComponent {
       .get<{ comments: Comment[] }>(`${this.ROOT_URL}/posts/${postId}/comments`)
       .subscribe({
         next: (commentInfo) => {
-          this.comentario = commentInfo.comments[0];
+          this.comentarios[postId] = commentInfo.comments; // Asignar comentarios al postId
         },
         error: (err) => {
           console.error('Error al obtener comentarios:', err);
@@ -65,10 +52,9 @@ export class AppComponent {
       });
   }
 
-  //ESTE ES EL QUE BUSCA A AMBOS EN ESTE MOMENTO
-  getUserAndPost() {
+  getUserPostComments() {
     this.http
-      .get<{ users: User[] }>(`${this.ROOT_URL}/users/search?q=` + this.txtUser)
+      .get<{ users: User[] }>(`${this.ROOT_URL}/users/filter?key=username&value=${this.txtUser}`)
       .pipe(
         mergeMap((userInfo: any) => {
           if (userInfo.users.length > 0) {
@@ -78,54 +64,20 @@ export class AppComponent {
             );
           } else {
             this.usuario = null;
-            return of(0);
+            return of([]);
           }
         })
       )
       .subscribe({
         next: (postInfo: any) => {
-          this.publicacion = postInfo.posts[0];
-        },
-      });
-  }
-
-  getUserPostComments() {
-    this.http
-      .get<{ users: User[] }>(`${this.ROOT_URL}/users/filter?key=username&value=` + this.txtUser)
-      .pipe(
-        mergeMap((userInfo: any) => {
-          if (userInfo.users.length > 0) {
-            this.usuario = userInfo.users[0];
-            return this.http.get<{ posts: Post[] }>(
-              `${this.ROOT_URL}/posts/user/` + this.usuario!.id
-            );
-          } else {
-            this.usuario = null;
-            return of(null);
-          }
-        }),
-        mergeMap((postInfo: any) => {
-          if (postInfo && postInfo.posts.length > 0) {
-            this.publicacion = postInfo.posts[0];
-            return this.http.get<{ comments: Comment[] }>(
-              `${this.ROOT_URL}/posts/${this.publicacion!.id}/comments`
-            );
-          } else {
-            this.publicacion = null;
-            return of(null);
-          }
-        })
-      )
-      .subscribe({
-        next: (commentInfo: any) => {
-          if (commentInfo && commentInfo.comments.length > 0) {
-            this.comentario = commentInfo.comments[0];
-          } else {
-            this.comentario = null;
-          }
+          this.publicaciones = postInfo.posts;
+          // Obtener comentarios para cada post automáticamente
+          this.publicaciones.forEach(post => {
+            this.getComments(post.id);
+          });
         },
         error: (err) => {
-          console.error('Error fetching data:', err);
+          console.error('Error fetching posts:', err);
         },
       });
   }
