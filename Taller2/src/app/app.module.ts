@@ -8,12 +8,14 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { UsuarioDetailComponent } from './Usuario/usuario-detail/usuario-detail.component';
 import { UsuarioPostsComponent } from './Usuario/usuario-posts/usuario-posts.component';
+import { UsuarioCommentComponent } from './Usuario/usuario-comment/usuario-comment.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UsuarioDetailComponent,
-    UsuarioPostsComponent
+    UsuarioPostsComponent,
+    UsuarioCommentComponent
   ],
   imports: [
     BrowserModule,

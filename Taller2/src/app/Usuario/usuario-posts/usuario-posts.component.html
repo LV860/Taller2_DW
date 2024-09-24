@@ -1,6 +1,6 @@
-<main>
-  <ng-container *ngIf="publicacion">
-    <p>Titulo : {{ publicacion.title }}</p>
-    <p>Cuerpo : {{ publicacion.body }}</p>
-  </ng-container>
+<main *ngIf="publicacion">
+  <p>Titulo: {{ publicacion.title }}</p>
+  <p>Cuerpo: {{ publicacion.body }}</p>
+  <p>Reacciones: {{ publicacion.reactions }}</p> <!-- Mostrar reacciones -->
+  <app-usuario-comments [comentarios]="comentarios"></app-usuario-comments>
 </main>
