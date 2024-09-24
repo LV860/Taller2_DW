@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { mergeMap, of } from 'rxjs';
+import { forkJoin, map, mergeMap, of } from 'rxjs';
 import { Post } from './models/Post';
 import { User } from './models/User';
 import { Comment } from './models/Comment';
@@ -78,6 +78,53 @@ export class AppComponent {
         },
         error: (err) => {
           console.error('Error fetching posts:', err);
+        },
+      });
+  }
+
+  getUserPostComments2() {
+    this.http
+      .get<{ users: User[] }>(`${this.ROOT_URL}/users/filter?key=username&value=` + this.txtUser)
+      .pipe(
+        mergeMap((userInfo: any) => {
+          if (userInfo.users.length > 0) {
+            this.usuario = userInfo.users[0];
+            return this.http.get<{ posts: Post[] }>(
+              `${this.ROOT_URL}/posts/user/` + this.usuario!.id
+            );
+          } else {
+            this.usuario = null;
+            return of(null); // Si no hay usuario, detener la cadena
+          }
+        }),
+        mergeMap((postInfo: any) => {
+          if (postInfo && postInfo.posts.length > 0) {
+            this.publicaciones = postInfo.posts; // Asignar todas las publicaciones
+            const commentRequests = this.publicaciones.map(post =>
+              this.http.get<{ comments: Comment[] }>(
+                `${this.ROOT_URL}/posts/${post.id}/comments`
+              ).pipe(
+                map((response: { comments: any; }) => ({ post, comments: response.comments || [] })) // Asociar comentarios al post
+              )
+            );
+  
+            // Realizar todas las solicitudes de comentarios para los posts
+            return forkJoin(commentRequests);
+          } else {
+            this.publicaciones = [];
+            return of([]); // Si no hay publicaciones, detener la cadena
+          }
+        })
+      )
+      .subscribe({
+        next: (commentResponses: any[]) => {
+          // Crear un diccionario de comentarios asociados a cada post
+          commentResponses.forEach(({ post, comments }) => {
+            this.comentarios[post.id] = comments;
+          });
+        },
+        error: (err) => {
+          console.error('Error fetching data:', err);
         },
       });
   }

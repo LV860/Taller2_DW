@@ -3,7 +3,7 @@
     <!-- Filtrar usuario -->
     <div class="mb-4">
       <h1 class="text-center">Buscar usuario</h1>
-      <form #form="ngForm" (ngSubmit)="getUserPostComments()" class="d-flex flex-column align-items-center">
+      <form #form="ngForm" (ngSubmit)="getUserPostComments2()" class="d-flex flex-column align-items-center">
         <label for="username" class="form-label">Username</label>
         <input type="text" name="username" [(ngModel)]="txtUser" class="form-control w-50 mb-3" placeholder="Ingrese el nombre de usuario" />
         <button type="submit" (click)="usuarioBuscado = true" class="btn btn-primary">Buscar usuario</button>
