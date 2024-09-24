@@ -26,7 +26,7 @@ export class AppComponent {
 
   searchUser() {
     this.http
-      .get<{ users: User[] }>(`${this.ROOT_URL}/users/search?q=${this.txtUser}`)
+      .get<{ users: User[] }>(`${this.ROOT_URL}/users/username=${this.txtUser}`)
       .subscribe({
         next: (userInfo) => {
           if (userInfo.users.length > 0) {
@@ -91,7 +91,7 @@ export class AppComponent {
 
   getUserPostComments() {
     this.http
-      .get<{ users: User[] }>(`${this.ROOT_URL}/users/search?q=` + this.txtUser)
+      .get<{ users: User[] }>(`${this.ROOT_URL}/users/filter?key=username&value=` + this.txtUser)
       .pipe(
         mergeMap((userInfo: any) => {
           if (userInfo.users.length > 0) {

@@ -7,15 +7,21 @@
         <input type="text" name="username " [(ngModel)]="txtUser" />
         <button type="submit">Buscar usuario</button>
       </form>
+    </div>
 
+    <div>
       <ng-container *ngIf="usuario">
         <app-usuario-detail [usuario]="usuario"></app-usuario-detail>
       </ng-container>
+    </div>
 
+    <div>
       <ng-container *ngIf="publicacion">
         <app-usuario-posts [publicacion]="publicacion"></app-usuario-posts>
       </ng-container>
+    </div>
 
+    <div>
       <ng-container *ngIf="comentario">
         <app-usuario-comment [comentario]="comentario"></app-usuario-comment>
       </ng-container>
