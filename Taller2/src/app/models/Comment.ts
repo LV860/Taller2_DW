@@ -1,7 +1,9 @@
-export interface Comment{
+import { User } from './User';
+
+export interface Comment {
   id: number;
-  body : string;
+  body: string;
   postId: number;
   likes: number;
-  username: string;
+  user: User;
 }

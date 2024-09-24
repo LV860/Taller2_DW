@@ -2,7 +2,7 @@
   <section class="users-table">
     <!-- Filtrar usuario -->
     <div>
-      <form #form="ngForm" (ngSubmit)="getUserAndPost()">
+      <form #form="ngForm" (ngSubmit)="getUserPostComments()">
         <label for="username">Username</label>
         <input type="text" name="username " [(ngModel)]="txtUser" />
         <button type="submit">Buscar usuario</button>

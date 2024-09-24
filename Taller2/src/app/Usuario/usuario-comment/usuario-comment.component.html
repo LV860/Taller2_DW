@@ -1,6 +1,5 @@
 <main *ngIf="comentario">
-    <p>usuario: {{ comentario.username }}</p>
-    <p>Comentario: {{ comentario.body }}</p>
-    <p>Likes: {{ comentario.likes }}</p> 
-  </main>
-  
+  <p>usuario: {{ comentario.user.username }}</p>
+  <p>Comentario: {{ comentario.body }}</p>
+  <p>Likes: {{ comentario.likes }}</p>
+</main>

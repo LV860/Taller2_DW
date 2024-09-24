@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { mergeMap, of } from 'rxjs';
 import { Post } from './models/Post';
 import { User } from './models/User';
+import { Comment } from './models/Comment';
 
 @Component({
   selector: 'app-root',
@@ -53,7 +54,7 @@ export class AppComponent {
 
   getComments(postId: number) {
     this.http
-      .get<{ comments: Comment[] }>(`${this.ROOT_URL}/comments/post/${postId}`)
+      .get<{ comments: Comment[] }>(`${this.ROOT_URL}/posts/${postId}/comments`)
       .subscribe({
         next: (commentInfo) => {
           this.comentario = commentInfo.comments[0];
@@ -88,5 +89,44 @@ export class AppComponent {
       });
   }
 
-  
+  getUserPostComments() {
+    this.http
+      .get<{ users: User[] }>(`${this.ROOT_URL}/users/search?q=` + this.txtUser)
+      .pipe(
+        mergeMap((userInfo: any) => {
+          if (userInfo.users.length > 0) {
+            this.usuario = userInfo.users[0];
+            return this.http.get<{ posts: Post[] }>(
+              `${this.ROOT_URL}/posts/user/` + this.usuario!.id
+            );
+          } else {
+            this.usuario = null;
+            return of(null);
+          }
+        }),
+        mergeMap((postInfo: any) => {
+          if (postInfo && postInfo.posts.length > 0) {
+            this.publicacion = postInfo.posts[0];
+            return this.http.get<{ comments: Comment[] }>(
+              `${this.ROOT_URL}/posts/${this.publicacion!.id}/comments`
+            );
+          } else {
+            this.publicacion = null;
+            return of(null);
+          }
+        })
+      )
+      .subscribe({
+        next: (commentInfo: any) => {
+          if (commentInfo && commentInfo.comments.length > 0) {
+            this.comentario = commentInfo.comments[0];
+          } else {
+            this.comentario = null;
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching data:', err);
+        },
+      });
+  }
 }
