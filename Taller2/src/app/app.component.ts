@@ -51,6 +51,19 @@ export class AppComponent {
       });
   }
 
+  getComments(postId: number) {
+    this.http
+      .get<{ comments: Comment[] }>(`${this.ROOT_URL}/comments/post/${postId}`)
+      .subscribe({
+        next: (commentInfo) => {
+          this.comentario = commentInfo.comments[0];
+        },
+        error: (err) => {
+          console.error('Error al obtener comentarios:', err);
+        },
+      });
+  }
+
   //ESTE ES EL QUE BUSCA A AMBOS EN ESTE MOMENTO
   getUserAndPost() {
     this.http
@@ -75,16 +88,5 @@ export class AppComponent {
       });
   }
 
-  getComments(postId: number) {
-    this.http
-      .get<{ comments: Comment[] }>(`${this.ROOT_URL}/comments/post/${postId}`)
-      .subscribe({
-        next: (commentInfo) => {
-          this.comentario = commentInfo.comments[0];
-        },
-        error: (err) => {
-          console.error('Error al obtener comentarios:', err);
-        },
-      });
-  }
+  
 }
