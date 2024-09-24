@@ -74,4 +74,17 @@ export class AppComponent {
         },
       });
   }
+
+  getComments(postId: number) {
+    this.http
+      .get<{ comments: Comment[] }>(`${this.ROOT_URL}/comments/post/${postId}`)
+      .subscribe({
+        next: (commentInfo) => {
+          this.comentario = commentInfo.comments[0];
+        },
+        error: (err) => {
+          console.error('Error al obtener comentarios:', err);
+        },
+      });
+  }
 }
