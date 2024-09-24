@@ -1,9 +1,7 @@
-import { User } from "./User";
-
-interface Comment{
+export interface Comment{
   id: number;
   body : string;
   postId: number;
   likes: number;
-  user: User;
+  username: string;
 }

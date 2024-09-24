@@ -1,5 +1,6 @@
-<main *ngIf="comentarios?.length">
-    <div *ngFor="let comentario of comentarios">
-      <p><strong>{{ comentario.user.username }}:</strong> {{ comentario.body }}</p>
-    </div>
+<main *ngIf="comentario">
+    <p>usuario: {{ comentario.username }}</p>
+    <p>Comentario: {{ comentario.body }}</p>
+    <p>Likes: {{ comentario.likes }}</p> 
   </main>
+  

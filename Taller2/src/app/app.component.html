@@ -4,7 +4,7 @@
     <div>
       <form #form="ngForm" (ngSubmit)="getUserAndPost()">
         <label for="username">Username</label>
-        <input type="text" name="username" [(ngModel)]="txtUser" />
+        <input type="text" name="username " [(ngModel)]="txtUser" />
         <button type="submit">Buscar usuario</button>
       </form>
 
@@ -12,12 +12,12 @@
         <app-usuario-detail [usuario]="usuario"></app-usuario-detail>
       </ng-container>
 
-      <ng-container *ngIf="!usuario && txtUser">
-        <p>No se encontró ningún usuario con el username {{ txtUser }}.</p>
-      </ng-container>
-
       <ng-container *ngIf="publicacion">
         <app-usuario-posts [publicacion]="publicacion"></app-usuario-posts>
+      </ng-container>
+
+      <ng-container *ngIf="comentario">
+        <app-usuario-posts [comentario]="comentario"></app-usuario-comment>
       </ng-container>
     </div>
   </section>
